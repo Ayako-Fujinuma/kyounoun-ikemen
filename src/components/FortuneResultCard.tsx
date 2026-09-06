@@ -1,0 +1,40 @@
+import Image from "next/image";
+import type { FortuneResult } from "@/lib/fortune";
+
+export default function FortuneResultCard({ result }: { result: FortuneResult }) {
+  const { character, message, isNight } = result;
+
+  return (
+    <div
+      className={`w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border animate-[fadeIn_0.5s_ease-out] ${
+        isNight ? "bg-slate-800/80 border-slate-600" : "bg-white/90 border-pink-100"
+      }`}
+    >
+      <div className={`relative aspect-[3/4] bg-gradient-to-br ${character.gradient}`}>
+        {/* unoptimized: プレースホルダーはSVGのため最適化APIを経由させない。実画像(PNG/WebP)に差し替え後も動作は変わらない */}
+        <Image
+          src={character.image}
+          alt={`${character.name}(${character.reading})`}
+          fill
+          unoptimized
+          className="object-cover"
+          priority
+        />
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+          <p className="text-white text-sm opacity-80">{character.type}</p>
+          <p className="text-white text-2xl font-bold">
+            {character.name} <span className="text-base font-normal opacity-80">{character.reading}</span>
+          </p>
+        </div>
+      </div>
+      <div className="p-6 space-y-3">
+        <p className={`text-sm italic ${isNight ? "text-slate-300" : "text-slate-500"}`}>
+          「{character.catchphrase}」
+        </p>
+        <p className={`whitespace-pre-line leading-relaxed text-lg ${isNight ? "text-slate-100" : "text-slate-800"}`}>
+          {message}
+        </p>
+      </div>
+    </div>
+  );
+}
