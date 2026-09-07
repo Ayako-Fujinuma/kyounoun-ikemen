@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import FortuneApp from "@/components/FortuneApp";
 
 const TITLE = "今日の運勢イケメン占い";
@@ -41,20 +40,15 @@ export default function Home() {
         </p>
       </div>
 
-      <Link href="/characters" className="block w-full max-w-xs sm:max-w-sm group">
-        <div className="relative aspect-[896/1200] rounded-3xl overflow-hidden shadow-2xl transition-transform group-hover:scale-[1.02]">
-          <Image
-            src="/hero.jpeg"
-            alt="登場キャラクターたち(蓮・陽翔・碧・湊・怜・獅道・そら・彰)"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-        <p className="text-center text-sm font-semibold mt-2 opacity-80 group-hover:opacity-100 underline underline-offset-4">
-          登場キャラクター一覧を見る →
-        </p>
-      </Link>
+      <div className="relative w-full max-w-xs sm:max-w-sm aspect-[896/1200] rounded-3xl overflow-hidden shadow-2xl">
+        <Image
+          src="/hero.jpeg"
+          alt="今日のイケメンたち"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
 
       <FortuneApp />
     </main>
