@@ -28,11 +28,11 @@ export default function Home() {
       <div className="text-center space-y-3 max-w-xl">
         <p className="text-sm font-semibold tracking-widest opacity-70">TODAY&apos;S FORTUNE</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-snug">
-          今日の運勢
+          今日の運勢を
           <br className="sm:hidden" />
           あなたにピッタリのイケメンが
           <br className="sm:hidden" />
-          今日を占います
+          占います
         </h1>
         <p className="opacity-80 text-base leading-relaxed">
           生年月日を教えてくれたら、今日のあなたにぴったりのホストが会いに来てくれるよ。

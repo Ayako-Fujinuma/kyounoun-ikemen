@@ -97,6 +97,12 @@ export default async function ResultPage({ searchParams }: Props) {
         >
           登場キャラクター一覧を見る →
         </Link>
+        <Link
+          href="/"
+          className="text-xs opacity-40 underline underline-offset-4 hover:opacity-70"
+        >
+          トップへ
+        </Link>
       </RevealResult>
     </main>
   );
