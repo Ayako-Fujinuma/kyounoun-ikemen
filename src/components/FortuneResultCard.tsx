@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { FortuneResult } from "@/lib/fortune";
 
 export default function FortuneResultCard({ result }: { result: FortuneResult }) {
-  const { character, message, isNight } = result;
+  const { character, rank, message, isNight } = result;
 
   return (
     <div
@@ -10,6 +10,12 @@ export default function FortuneResultCard({ result }: { result: FortuneResult })
         isNight ? "bg-slate-800/80 border-slate-600" : "bg-white/90 border-pink-100"
       }`}
     >
+      <div className={`text-center py-4 ${isNight ? "bg-slate-900/50" : "bg-black/[.03]"}`}>
+        <p className={`text-xs font-semibold tracking-widest ${isNight ? "text-slate-300" : "text-slate-500"}`}>
+          今日の運勢
+        </p>
+        <p className={`text-3xl font-extrabold ${rank.color}`}>{rank.label}</p>
+      </div>
       <div className={`relative aspect-[3/4] bg-gradient-to-br ${character.gradient}`}>
         <Image
           src={character.image}

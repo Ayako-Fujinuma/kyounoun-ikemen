@@ -1,8 +1,10 @@
 import { characters, type Character } from "./characters";
 import { characterVoices, dayMain, nightMain } from "./messages";
+import { pickFortuneRank, type FortuneRank } from "./fortuneRank";
 
 export interface FortuneResult {
   character: Character;
+  rank: FortuneRank;
   message: string;
   opening: string;
   main: string;
@@ -23,8 +25,8 @@ function hashString(input: string): number {
 }
 
 /**
- * 生年月日 + 今日の日付(JST)から、今日だけの「ぴったりのイケメン」とメッセージを決定する。
- * 同じ人×同じ日なら必ず同じ結果になり、日が変われば結果も変わる。
+ * 生年月日 + 今日の日付(JST)から、今日だけの運勢ランク・「ぴったりのイケメン」・
+ * メッセージを決定する。同じ人×同じ日なら必ず同じ結果になり、日が変われば結果も変わる。
  * opening/closingは選ばれたキャラごとの喋り方から選ぶことで、内容は共通でも
  * キャラの個性が出るようにしている。
  */
@@ -35,6 +37,7 @@ export function generateFortune(
 ): FortuneResult {
   const seedBase = `${birthdateKey}#${todayKey}`;
   const character = characters[hashString(`${seedBase}#character`) % characters.length];
+  const rank = pickFortuneRank(hashString(`${seedBase}#rank`));
 
   const voice = characterVoices[character.id][isNight ? "night" : "day"];
   const mainPool = isNight ? nightMain : dayMain;
@@ -45,6 +48,7 @@ export function generateFortune(
 
   return {
     character,
+    rank,
     message: `${opening}\n${main}\n${closing}`,
     opening,
     main,
