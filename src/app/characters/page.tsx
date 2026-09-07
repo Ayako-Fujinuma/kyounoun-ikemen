@@ -23,7 +23,6 @@ export default function CharactersPage() {
             <p className="font-bold">
               {c.name} <span className="text-xs font-normal opacity-70">{c.reading}</span>
             </p>
-            <p className="text-xs opacity-60">{c.type}</p>
             <p className="text-xs opacity-80 leading-relaxed">{c.intro}</p>
           </div>
         ))}

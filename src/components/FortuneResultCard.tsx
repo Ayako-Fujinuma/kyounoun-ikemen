@@ -19,7 +19,6 @@ export default function FortuneResultCard({ result }: { result: FortuneResult })
           priority
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-          <p className="text-white text-sm opacity-80">{character.type}</p>
           <p className="text-white text-2xl font-bold">
             {character.name} <span className="text-base font-normal opacity-80">{character.reading}</span>
           </p>

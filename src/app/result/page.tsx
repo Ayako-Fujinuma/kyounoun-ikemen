@@ -38,26 +38,18 @@ export default async function ResultPage({
   const host = hdrs.get("host");
   const proto = hdrs.get("x-forwarded-proto") ?? "https";
   const shareUrl = `${proto}://${host}/result?birth=${birthdateKey}`;
-  const shareText = `今日のあなたにピッタリなのは「${result.character.name}(${result.character.type})」!\n「${result.character.catchphrase}」`;
+  const shareText = `今日のあなたにピッタリなのは「${result.character.name}」!\n「${result.character.catchphrase}」`;
 
   return (
     <main className="flex flex-1 flex-col items-center gap-8 px-6 py-16 sm:py-24">
       <FortuneResultCard result={result} />
       <ShareButtons shareText={shareText} shareUrl={shareUrl} isNight={isNight} />
-      <div className="flex flex-col items-center gap-3">
-        <Link
-          href="/"
-          className={`text-sm font-semibold underline underline-offset-4 opacity-80 hover:opacity-100`}
-        >
-          もう一度診断する
-        </Link>
-        <Link
-          href="/characters"
-          className="text-xs opacity-40 underline underline-offset-4 hover:opacity-70"
-        >
-          登場キャラクター一覧を見る →
-        </Link>
-      </div>
+      <Link
+        href="/characters"
+        className="text-xs opacity-40 underline underline-offset-4 hover:opacity-70"
+      >
+        登場キャラクター一覧を見る →
+      </Link>
     </main>
   );
 }
