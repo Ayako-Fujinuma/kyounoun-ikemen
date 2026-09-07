@@ -20,9 +20,7 @@ export default function CharactersPage() {
             >
               <Image src={c.image} alt={c.name} fill className="object-cover" />
             </div>
-            <p className="font-bold">
-              {c.name} <span className="text-xs font-normal opacity-70">{c.reading}</span>
-            </p>
+            <p className="font-bold">{c.name}</p>
             <p className="text-xs opacity-80 leading-relaxed">{c.intro}</p>
           </div>
         ))}

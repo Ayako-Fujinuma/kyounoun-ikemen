@@ -13,15 +13,13 @@ export default function FortuneResultCard({ result }: { result: FortuneResult })
       <div className={`relative aspect-[3/4] bg-gradient-to-br ${character.gradient}`}>
         <Image
           src={character.image}
-          alt={`${character.name}(${character.reading})`}
+          alt={character.name}
           fill
           className="object-cover"
           priority
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-          <p className="text-white text-2xl font-bold">
-            {character.name} <span className="text-base font-normal opacity-80">{character.reading}</span>
-          </p>
+          <p className="text-white text-2xl font-bold">{character.name}</p>
         </div>
       </div>
       <div className="p-6 space-y-3">
