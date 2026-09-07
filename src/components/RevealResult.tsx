@@ -36,14 +36,26 @@ export default function RevealResult({ finalCharacter, isNight, birthdateKey, ch
     return () => clearInterval(interval);
   }, [finalCharacter.id]);
 
+  const dateLabel = formatDateKeyForDisplay(birthdateKey);
+  const headingClass = `text-xl font-bold text-center leading-relaxed ${isNight ? "text-slate-100" : "text-slate-800"}`;
+
   if (revealed) {
-    return <div className="flex flex-col items-center gap-8 w-full animate-[fadeIn_0.6s_ease-out]">{children}</div>;
+    return (
+      <div className="flex flex-col items-center gap-8 w-full animate-[fadeIn_0.6s_ease-out]">
+        <p className={headingClass}>
+          {dateLabel}生まれのあなたに
+          <br />
+          今日ピッタリのイケメンは「{finalCharacter.name}」!
+        </p>
+        {children}
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-md">
-      <p className={`text-xl font-bold text-center leading-relaxed ${isNight ? "text-slate-100" : "text-slate-800"}`}>
-        {formatDateKeyForDisplay(birthdateKey)}生まれのあなたに
+      <p className={headingClass}>
+        {dateLabel}生まれのあなたに
         <br />
         今日ピッタリのイケメンは?
       </p>
