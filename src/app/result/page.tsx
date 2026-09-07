@@ -7,6 +7,7 @@ import { generateFortune, type FortuneResult } from "@/lib/fortune";
 import { heartsDisplay } from "@/lib/fortuneHearts";
 import FortuneResultCard from "@/components/FortuneResultCard";
 import MoreMessages from "@/components/MoreMessages";
+import RevealResult from "@/components/RevealResult";
 import ShareButtons from "@/components/ShareButtons";
 
 type Props = {
@@ -78,22 +79,24 @@ export default async function ResultPage({ searchParams }: Props) {
 
   return (
     <main className="flex flex-1 flex-col items-center gap-8 px-6 py-16 sm:py-24">
-      <FortuneResultCard result={result} />
-      <MoreMessages
-        character={result.character}
-        isNight={result.isNight}
-        voiceMode={result.voiceMode}
-        shownOpening={result.opening}
-        shownMain={result.main}
-        shownClosing={result.closing}
-      />
-      <ShareButtons shareText={shareText} shareUrl={shareUrl} isNight={result.isNight} />
-      <Link
-        href="/characters"
-        className="text-xs opacity-40 underline underline-offset-4 hover:opacity-70"
-      >
-        登場キャラクター一覧を見る →
-      </Link>
+      <RevealResult finalCharacter={result.character} isNight={result.isNight}>
+        <FortuneResultCard result={result} />
+        <MoreMessages
+          character={result.character}
+          isNight={result.isNight}
+          voiceMode={result.voiceMode}
+          shownOpening={result.opening}
+          shownMain={result.main}
+          shownClosing={result.closing}
+        />
+        <ShareButtons shareText={shareText} shareUrl={shareUrl} isNight={result.isNight} />
+        <Link
+          href="/characters"
+          className="text-xs opacity-40 underline underline-offset-4 hover:opacity-70"
+        >
+          登場キャラクター一覧を見る →
+        </Link>
+      </RevealResult>
     </main>
   );
 }
