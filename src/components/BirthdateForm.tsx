@@ -72,7 +72,9 @@ export default function BirthdateForm({ isNight, onDiagnose }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full max-w-md">
-      <p className={`text-sm font-bold ${isNight ? "text-slate-200" : "text-slate-700"}`}>生年月日</p>
+      <p className={`text-sm font-bold ${isNight ? "text-slate-200" : "text-slate-700"}`}>
+        生まれたのはいつか教えてくれるかな?
+      </p>
       <div className="flex gap-2 w-full justify-center">
         <select
           aria-label="生まれ年"
