@@ -79,7 +79,7 @@ export default async function ResultPage({ searchParams }: Props) {
 
   return (
     <main className="flex flex-1 flex-col items-center gap-8 px-6 py-16 sm:py-24">
-      <RevealResult finalCharacter={result.character} isNight={result.isNight}>
+      <RevealResult finalCharacter={result.character} isNight={result.isNight} birthdateKey={birthdateKey}>
         <FortuneResultCard result={result} />
         <MoreMessages
           character={result.character}

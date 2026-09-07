@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { characters, type Character } from "@/lib/characters";
+import { formatDateKeyForDisplay } from "@/lib/date";
 
 const SHUFFLE_INTERVAL_MS = 110;
 const SHUFFLE_STEPS = 12;
@@ -11,10 +12,11 @@ const PAUSE_ON_LANDED_MS = 350;
 interface Props {
   finalCharacter: Character;
   isNight: boolean;
+  birthdateKey: string;
   children: ReactNode;
 }
 
-export default function RevealResult({ finalCharacter, isNight, children }: Props) {
+export default function RevealResult({ finalCharacter, isNight, birthdateKey, children }: Props) {
   const [revealed, setRevealed] = useState(false);
   const [shuffleIndex, setShuffleIndex] = useState(0);
 
@@ -41,9 +43,9 @@ export default function RevealResult({ finalCharacter, isNight, children }: Prop
   return (
     <div className="flex flex-col items-center gap-4 w-full max-w-md">
       <p className={`text-xl font-bold text-center leading-relaxed ${isNight ? "text-slate-100" : "text-slate-800"}`}>
-        今日あなたにぴったりの
+        {formatDateKeyForDisplay(birthdateKey)}生まれのあなたに
         <br />
-        イケメンは……
+        今日ピッタリのイケメンは?
       </p>
       <div
         className={`relative w-full aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border ${
