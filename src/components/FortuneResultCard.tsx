@@ -1,8 +1,9 @@
 import Image from "next/image";
 import type { FortuneResult } from "@/lib/fortune";
+import { MAX_HEARTS } from "@/lib/fortuneHearts";
 
 export default function FortuneResultCard({ result }: { result: FortuneResult }) {
-  const { character, rank, message, isNight } = result;
+  const { character, hearts, message, isNight } = result;
 
   return (
     <div
@@ -14,7 +15,16 @@ export default function FortuneResultCard({ result }: { result: FortuneResult })
         <p className={`text-xs font-semibold tracking-widest ${isNight ? "text-slate-300" : "text-slate-500"}`}>
           今日の運勢
         </p>
-        <p className={`text-3xl font-extrabold ${rank.color}`}>{rank.label}</p>
+        <div className="flex justify-center gap-1 text-2xl" aria-label={`ハート${hearts}個`}>
+          {Array.from({ length: MAX_HEARTS }, (_, i) => (
+            <span
+              key={i}
+              className={i < hearts ? "text-rose-500" : isNight ? "text-slate-600" : "text-slate-200"}
+            >
+              ♥
+            </span>
+          ))}
+        </div>
       </div>
       <div className={`relative aspect-[3/4] bg-gradient-to-br ${character.gradient}`}>
         <Image

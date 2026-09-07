@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { formatDateKey, getTodayKeyJST, isNightModeJST, isValidBirthdate } from "@/lib/date";
 import { generateFortune, type FortuneResult } from "@/lib/fortune";
+import { heartsDisplay } from "@/lib/fortuneHearts";
 import FortuneResultCard from "@/components/FortuneResultCard";
 import MoreMessages from "@/components/MoreMessages";
 import ShareButtons from "@/components/ShareButtons";
@@ -45,8 +46,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const resolved = await resolveResult(searchParams);
   if (!resolved) return { title: "診断結果 | 今日の運勢イケメン占い" };
 
-  const { character, rank } = resolved.result;
-  const title = `今日の運勢は「${rank.label}」${character.name}からの応援メッセージ | 今日の運勢イケメン占い`;
+  const { character, hearts } = resolved.result;
+  const title = `今日の運勢は${heartsDisplay(hearts)}${character.name}からの応援メッセージ | 今日の運勢イケメン占い`;
   const description = character.catchphrase;
   const imageUrl = await absoluteUrl(character.image);
 
@@ -73,7 +74,7 @@ export default async function ResultPage({ searchParams }: Props) {
   const { birthdateKey, result } = resolved;
 
   const shareUrl = await absoluteUrl(`/result?birth=${birthdateKey}`);
-  const shareText = `【今日の運勢イケメン占い】\n今日の運勢は「${result.rank.label}」\n今日のあなたにピッタリなホストは「${result.character.name}」\n「${result.character.catchphrase}」`;
+  const shareText = `【今日の運勢イケメン占い】\n今日の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなホストは「${result.character.name}」\n「${result.character.catchphrase}」`;
 
   return (
     <main className="flex flex-1 flex-col items-center gap-8 px-6 py-16 sm:py-24">
