@@ -1,9 +1,12 @@
 import { characters, type Character } from "./characters";
-import { dayMessages, nightMessages } from "./messages";
+import { characterVoices, dayMain, nightMain } from "./messages";
 
 export interface FortuneResult {
   character: Character;
   message: string;
+  opening: string;
+  main: string;
+  closing: string;
   isNight: boolean;
 }
 
@@ -22,6 +25,8 @@ function hashString(input: string): number {
 /**
  * 生年月日 + 今日の日付(JST)から、今日だけの「ぴったりのイケメン」とメッセージを決定する。
  * 同じ人×同じ日なら必ず同じ結果になり、日が変われば結果も変わる。
+ * opening/closingは選ばれたキャラごとの喋り方から選ぶことで、内容は共通でも
+ * キャラの個性が出るようにしている。
  */
 export function generateFortune(
   birthdateKey: string,
@@ -31,24 +36,19 @@ export function generateFortune(
   const seedBase = `${birthdateKey}#${todayKey}`;
   const character = characters[hashString(`${seedBase}#character`) % characters.length];
 
-  const parts = isNight ? nightMessages : dayMessages;
-  const opening = parts.opening[hashString(`${seedBase}#opening`) % parts.opening.length];
-  const main = parts.main[hashString(`${seedBase}#main`) % parts.main.length];
-  const closing = parts.closing[hashString(`${seedBase}#closing`) % parts.closing.length];
+  const voice = characterVoices[character.id][isNight ? "night" : "day"];
+  const mainPool = isNight ? nightMain : dayMain;
+
+  const opening = voice.opening[hashString(`${seedBase}#opening`) % voice.opening.length];
+  const main = mainPool[hashString(`${seedBase}#main`) % mainPool.length];
+  const closing = voice.closing[hashString(`${seedBase}#closing`) % voice.closing.length];
 
   return {
     character,
     message: `${opening}\n${main}\n${closing}`,
+    opening,
+    main,
+    closing,
     isNight,
   };
-}
-
-/**
- * 「もっと応援コメントを見る」用に、日付に関係なくその場でランダムな
- * メッセージを1つ作る(今日の診断結果そのものは変えず、おまけとして表示する)。
- */
-export function generateRandomMessage(isNight: boolean): string {
-  const parts = isNight ? nightMessages : dayMessages;
-  const pick = (list: string[]) => list[Math.floor(Math.random() * list.length)];
-  return `${pick(parts.opening)}\n${pick(parts.main)}\n${pick(parts.closing)}`;
 }

@@ -1,13 +1,58 @@
 "use client";
 
-import { useState } from "react";
-import { generateRandomMessage } from "@/lib/fortune";
+import { useRef, useState } from "react";
+import type { Character } from "@/lib/characters";
+import { characterVoices, dayMain, nightMain } from "@/lib/messages";
 
-export default function MoreMessages({ isNight }: { isNight: boolean }) {
+function shuffle<T>(items: T[]): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+/**
+ * 同じ候補を全部使い切るまで繰り返さない「福引き袋」方式のピッカー。
+ * 純粋なランダムだと直近と同じ・似た文が出やすいための対策。
+ * alreadyShownは、診断結果ですでに見せた分を最初の1周だけ除外するための値。
+ */
+function createBagPicker(items: string[], alreadyShown?: string) {
+  let bag: string[] = [];
+  return function pick(): string {
+    if (bag.length === 0) {
+      const rest = alreadyShown ? items.filter((item) => item !== alreadyShown) : items;
+      bag = shuffle(rest.length > 0 ? rest : items);
+    }
+    return bag.pop()!;
+  };
+}
+
+interface Props {
+  character: Character;
+  isNight: boolean;
+  shownOpening: string;
+  shownMain: string;
+  shownClosing: string;
+}
+
+export default function MoreMessages({ character, isNight, shownOpening, shownMain, shownClosing }: Props) {
   const [messages, setMessages] = useState<string[]>([]);
+  const pickersRef = useRef<{ opening: () => string; main: () => string; closing: () => string } | null>(null);
+
+  if (pickersRef.current === null) {
+    const voice = characterVoices[character.id][isNight ? "night" : "day"];
+    pickersRef.current = {
+      opening: createBagPicker(voice.opening, shownOpening),
+      main: createBagPicker(isNight ? nightMain : dayMain, shownMain),
+      closing: createBagPicker(voice.closing, shownClosing),
+    };
+  }
 
   function handleMore() {
-    setMessages((prev) => [...prev, generateRandomMessage(isNight)]);
+    const { opening, main, closing } = pickersRef.current!;
+    setMessages((prev) => [...prev, `${opening()}\n${main()}\n${closing()}`]);
   }
 
   return (
@@ -25,7 +70,7 @@ export default function MoreMessages({ isNight }: { isNight: boolean }) {
       <button
         type="button"
         onClick={handleMore}
-        className={`text-sm font-semibold underline underline-offset-4 opacity-70 hover:opacity-100`}
+        className="text-sm font-semibold underline underline-offset-4 opacity-70 hover:opacity-100"
       >
         もっと応援コメントを見る
       </button>

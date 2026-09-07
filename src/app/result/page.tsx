@@ -78,7 +78,13 @@ export default async function ResultPage({ searchParams }: Props) {
   return (
     <main className="flex flex-1 flex-col items-center gap-8 px-6 py-16 sm:py-24">
       <FortuneResultCard result={result} />
-      <MoreMessages isNight={result.isNight} />
+      <MoreMessages
+        character={result.character}
+        isNight={result.isNight}
+        shownOpening={result.opening}
+        shownMain={result.main}
+        shownClosing={result.closing}
+      />
       <ShareButtons shareText={shareText} shareUrl={shareUrl} isNight={result.isNight} />
       <Link
         href="/characters"
