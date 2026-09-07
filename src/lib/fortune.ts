@@ -42,3 +42,13 @@ export function generateFortune(
     isNight,
   };
 }
+
+/**
+ * 「もっと応援コメントを見る」用に、日付に関係なくその場でランダムな
+ * メッセージを1つ作る(今日の診断結果そのものは変えず、おまけとして表示する)。
+ */
+export function generateRandomMessage(isNight: boolean): string {
+  const parts = isNight ? nightMessages : dayMessages;
+  const pick = (list: string[]) => list[Math.floor(Math.random() * list.length)];
+  return `${pick(parts.opening)}\n${pick(parts.main)}\n${pick(parts.closing)}`;
+}

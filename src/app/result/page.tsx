@@ -3,12 +3,13 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { formatDateKey, getTodayKeyJST, isNightModeJST, isValidBirthdate } from "@/lib/date";
-import { generateFortune } from "@/lib/fortune";
+import { generateFortune, type FortuneResult } from "@/lib/fortune";
 import FortuneResultCard from "@/components/FortuneResultCard";
+import MoreMessages from "@/components/MoreMessages";
 import ShareButtons from "@/components/ShareButtons";
 
-export const metadata: Metadata = {
-  title: "診断結果 | 今日の運勢イケメン占い",
+type Props = {
+  searchParams: Promise<{ birth?: string }>;
 };
 
 function parseBirthParam(birth: string | undefined): string | null {
@@ -22,28 +23,63 @@ function parseBirthParam(birth: string | undefined): string | null {
   return formatDateKey(year, month, day);
 }
 
-export default async function ResultPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ birth?: string }>;
-}) {
+async function resolveResult(
+  searchParams: Props["searchParams"]
+): Promise<{ birthdateKey: string; result: FortuneResult } | null> {
   const { birth } = await searchParams;
   const birthdateKey = parseBirthParam(birth);
-  if (!birthdateKey) redirect("/");
-
+  if (!birthdateKey) return null;
   const isNight = isNightModeJST();
   const result = generateFortune(birthdateKey, getTodayKeyJST(), isNight);
+  return { birthdateKey, result };
+}
 
+async function absoluteUrl(path: string): Promise<string> {
   const hdrs = await headers();
   const host = hdrs.get("host");
   const proto = hdrs.get("x-forwarded-proto") ?? "https";
-  const shareUrl = `${proto}://${host}/result?birth=${birthdateKey}`;
+  return `${proto}://${host}${path}`;
+}
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const resolved = await resolveResult(searchParams);
+  if (!resolved) return { title: "診断結果 | 今日の運勢イケメン占い" };
+
+  const { character } = resolved.result;
+  const title = `${character.name}からの応援メッセージ | 今日の運勢イケメン占い`;
+  const description = character.catchphrase;
+  const imageUrl = await absoluteUrl(character.image);
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [{ url: imageUrl, alt: character.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
+
+export default async function ResultPage({ searchParams }: Props) {
+  const resolved = await resolveResult(searchParams);
+  if (!resolved) redirect("/");
+  const { birthdateKey, result } = resolved;
+
+  const shareUrl = await absoluteUrl(`/result?birth=${birthdateKey}`);
   const shareText = `今日のあなたにピッタリなのは「${result.character.name}」!\n「${result.character.catchphrase}」`;
 
   return (
     <main className="flex flex-1 flex-col items-center gap-8 px-6 py-16 sm:py-24">
       <FortuneResultCard result={result} />
-      <ShareButtons shareText={shareText} shareUrl={shareUrl} isNight={isNight} />
+      <MoreMessages isNight={result.isNight} />
+      <ShareButtons shareText={shareText} shareUrl={shareUrl} isNight={result.isNight} />
       <Link
         href="/characters"
         className="text-xs opacity-40 underline underline-offset-4 hover:opacity-70"
