@@ -6,7 +6,7 @@ import { characters, getCharacterImage, type Character } from "@/lib/characters"
 import { formatDateKeyForDisplay } from "@/lib/date";
 
 const SHUFFLE_INTERVAL_MS = 110;
-const SHUFFLE_STEPS = 12;
+const SHUFFLE_LAPS = 2;
 const PAUSE_ON_LANDED_MS = 350;
 
 interface Props {
@@ -22,10 +22,11 @@ export default function RevealResult({ finalCharacter, isNight, birthdateKey, ch
 
   useEffect(() => {
     const finalIndex = characters.findIndex((c) => c.id === finalCharacter.id);
+    const shuffleSteps = characters.length * SHUFFLE_LAPS;
     let step = 0;
     const interval = setInterval(() => {
       step += 1;
-      if (step >= SHUFFLE_STEPS) {
+      if (step >= shuffleSteps) {
         clearInterval(interval);
         setShuffleIndex(finalIndex);
         setTimeout(() => setRevealed(true), PAUSE_ON_LANDED_MS);
