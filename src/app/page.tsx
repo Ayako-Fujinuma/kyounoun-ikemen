@@ -22,7 +22,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+  const invalidDate = error === "invalid_date";
+
   return (
     <main className="flex flex-1 flex-col items-center gap-10 px-6 py-16 sm:py-24">
       <div className="text-center space-y-3 max-w-xl">
@@ -38,6 +45,9 @@ export default function Home() {
           生年月日を教えてくれたら、今日のあなたにぴったりのホストが会いに来てくれるよ。
           夜21時を過ぎたら、そっと寄り添う癒しモードに変わるから、遅い時間でも安心して。
         </p>
+        {invalidDate && (
+          <p className="text-sm font-bold text-red-500">正しい生年月日を選んでね</p>
+        )}
       </div>
 
       <HeroImage />

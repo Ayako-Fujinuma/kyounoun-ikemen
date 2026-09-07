@@ -72,7 +72,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
 export default async function ResultPage({ searchParams }: Props) {
   const resolved = await resolveResult(searchParams);
-  if (!resolved) redirect("/");
+  if (!resolved) redirect("/?error=invalid_date");
   const { birthdateKey, result } = resolved;
 
   const shareUrl = await absoluteUrl(`/result?birth=${birthdateKey}`);
