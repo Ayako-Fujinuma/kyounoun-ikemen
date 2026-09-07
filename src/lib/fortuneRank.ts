@@ -27,3 +27,8 @@ export function pickFortuneRank(seedValue: number): FortuneRank {
   }
   return RANKS[0];
 }
+
+/** 凶・大凶のような低ランクの日は、応援コメントもハイテンションではなく労わる方向にする */
+export function isLowFortuneRank(label: string): boolean {
+  return label === "凶" || label === "大凶";
+}

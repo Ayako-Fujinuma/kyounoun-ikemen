@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { Character } from "@/lib/characters";
+import type { VoiceMode } from "@/lib/fortune";
 import { characterVoices, dayMain, nightMain } from "@/lib/messages";
 
 function shuffle<T>(items: T[]): T[] {
@@ -32,20 +33,28 @@ function createBagPicker(items: string[], alreadyShown?: string) {
 interface Props {
   character: Character;
   isNight: boolean;
+  voiceMode: VoiceMode;
   shownOpening: string;
   shownMain: string;
   shownClosing: string;
 }
 
-export default function MoreMessages({ character, isNight, shownOpening, shownMain, shownClosing }: Props) {
+export default function MoreMessages({
+  character,
+  isNight,
+  voiceMode,
+  shownOpening,
+  shownMain,
+  shownClosing,
+}: Props) {
   const [messages, setMessages] = useState<string[]>([]);
   const pickersRef = useRef<{ opening: () => string; main: () => string; closing: () => string } | null>(null);
 
   if (pickersRef.current === null) {
-    const voice = characterVoices[character.id][isNight ? "night" : "day"];
+    const voice = characterVoices[character.id][voiceMode];
     pickersRef.current = {
       opening: createBagPicker(voice.opening, shownOpening),
-      main: createBagPicker(isNight ? nightMain : dayMain, shownMain),
+      main: createBagPicker(voiceMode === "night" ? nightMain : dayMain, shownMain),
       closing: createBagPicker(voice.closing, shownClosing),
     };
   }

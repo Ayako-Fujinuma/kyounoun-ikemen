@@ -1,6 +1,8 @@
 import { characters, type Character } from "./characters";
 import { characterVoices, dayMain, nightMain } from "./messages";
-import { pickFortuneRank, type FortuneRank } from "./fortuneRank";
+import { pickFortuneRank, isLowFortuneRank, type FortuneRank } from "./fortuneRank";
+
+export type VoiceMode = "day" | "night";
 
 export interface FortuneResult {
   character: Character;
@@ -10,6 +12,7 @@ export interface FortuneResult {
   main: string;
   closing: string;
   isNight: boolean;
+  voiceMode: VoiceMode;
 }
 
 /**
@@ -29,6 +32,10 @@ function hashString(input: string): number {
  * メッセージを決定する。同じ人×同じ日なら必ず同じ結果になり、日が変われば結果も変わる。
  * opening/closingは選ばれたキャラごとの喋り方から選ぶことで、内容は共通でも
  * キャラの個性が出るようにしている。
+ *
+ * isNight(実際の時刻)とは別にvoiceModeを持つ: 凶・大凶の日は実際が昼でも
+ * nightのしっとりした口調・本文を使い、ハイテンションな言葉で運勢の悪さと
+ * ちぐはぐにならないようにする。カード自体の見た目(色)はisNightのまま。
  */
 export function generateFortune(
   birthdateKey: string,
@@ -39,8 +46,9 @@ export function generateFortune(
   const character = characters[hashString(`${seedBase}#character`) % characters.length];
   const rank = pickFortuneRank(hashString(`${seedBase}#rank`));
 
-  const voice = characterVoices[character.id][isNight ? "night" : "day"];
-  const mainPool = isNight ? nightMain : dayMain;
+  const voiceMode: VoiceMode = isNight || isLowFortuneRank(rank.label) ? "night" : "day";
+  const voice = characterVoices[character.id][voiceMode];
+  const mainPool = voiceMode === "night" ? nightMain : dayMain;
 
   const opening = voice.opening[hashString(`${seedBase}#opening`) % voice.opening.length];
   const main = mainPool[hashString(`${seedBase}#main`) % mainPool.length];
@@ -54,5 +62,6 @@ export function generateFortune(
     main,
     closing,
     isNight,
+    voiceMode,
   };
 }

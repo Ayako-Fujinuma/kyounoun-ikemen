@@ -81,6 +81,7 @@ export default async function ResultPage({ searchParams }: Props) {
       <MoreMessages
         character={result.character}
         isNight={result.isNight}
+        voiceMode={result.voiceMode}
         shownOpening={result.opening}
         shownMain={result.main}
         shownClosing={result.closing}
