@@ -3,6 +3,7 @@ import { Zen_Maru_Gothic } from "next/font/google";
 import "./globals.css";
 import SiteThemeWrapper from "@/components/SiteThemeWrapper";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const zenMaruGothic = Zen_Maru_Gothic({
   variable: "--font-zen-maru",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteThemeWrapper>
           <Header />
           {children}
+          <Footer />
         </SiteThemeWrapper>
       </body>
     </html>
