@@ -18,7 +18,7 @@ export default function CharactersPage() {
             <div
               className={`relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br ${c.gradient}`}
             >
-              <Image src={c.image} alt={c.name} fill unoptimized className="object-cover" />
+              <Image src={c.image} alt={c.name} fill className="object-cover" />
             </div>
             <p className="font-bold">
               {c.name} <span className="text-xs font-normal opacity-70">{c.reading}</span>

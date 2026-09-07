@@ -11,12 +11,10 @@ export default function FortuneResultCard({ result }: { result: FortuneResult })
       }`}
     >
       <div className={`relative aspect-[3/4] bg-gradient-to-br ${character.gradient}`}>
-        {/* unoptimized: プレースホルダーはSVGのため最適化APIを経由させない。実画像(PNG/WebP)に差し替え後も動作は変わらない */}
         <Image
           src={character.image}
           alt={`${character.name}(${character.reading})`}
           fill
-          unoptimized
           className="object-cover"
           priority
         />
