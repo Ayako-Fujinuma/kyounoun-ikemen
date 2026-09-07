@@ -1,6 +1,6 @@
 import { characters, type Character } from "./characters";
 import { characterVoices, dayMain, nightMain } from "./messages";
-import { pickHeartCount, isLowHeartCount } from "./fortuneHearts";
+import { pickHeartCount } from "./fortuneHearts";
 
 export type VoiceMode = "day" | "night";
 
@@ -31,11 +31,8 @@ function hashString(input: string): number {
  * 生年月日 + 今日の日付(JST)から、今日だけの運勢(ハートの数)・「ぴったりのイケメン」・
  * メッセージを決定する。同じ人×同じ日なら必ず同じ結果になり、日が変われば結果も変わる。
  * opening/closingは選ばれたキャラごとの喋り方から選ぶことで、内容は共通でも
- * キャラの個性が出るようにしている。
- *
- * isNight(実際の時刻)とは別にvoiceModeを持つ: ハートが少ない日は実際が昼でも
- * nightのしっとりした口調・本文を使い、ハイテンションな言葉と運勢の低さが
- * ちぐはぐにならないようにする。カード自体の見た目(色)はisNightのまま。
+ * キャラの個性が出るようにしている。voiceMode(口調・本文の昼夜)は実際の時刻(isNight)
+ * にそのまま合わせる。
  */
 export function generateFortune(
   birthdateKey: string,
@@ -46,7 +43,7 @@ export function generateFortune(
   const character = characters[hashString(`${seedBase}#character`) % characters.length];
   const hearts = pickHeartCount(hashString(`${seedBase}#hearts`));
 
-  const voiceMode: VoiceMode = isNight || isLowHeartCount(hearts) ? "night" : "day";
+  const voiceMode: VoiceMode = isNight ? "night" : "day";
   const voice = characterVoices[character.id][voiceMode];
   const mainPool = voiceMode === "night" ? nightMain : dayMain;
 

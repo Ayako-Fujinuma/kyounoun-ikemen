@@ -27,8 +27,3 @@ export function pickHeartCount(seedValue: number): number {
 export function heartsDisplay(count: number, max: number = MAX_HEARTS): string {
   return "♥".repeat(count) + "♡".repeat(Math.max(0, max - count));
 }
-
-/** ハートが少ない日は、応援コメントもハイテンションではなく労わる方向にする */
-export function isLowHeartCount(count: number): boolean {
-  return count <= 2;
-}
