@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import FortuneApp from "@/components/FortuneApp";
+import HeroImage from "@/components/HeroImage";
 
 const TITLE = "今日の運勢イケメン占い";
 const DESCRIPTION =
@@ -40,15 +40,7 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="relative w-full max-w-xs sm:max-w-sm aspect-[896/1200] rounded-3xl overflow-hidden shadow-2xl">
-        <Image
-          src="/hero.jpeg"
-          alt="今日のイケメンたち"
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
+      <HeroImage />
 
       <FortuneApp />
     </main>
