@@ -15,13 +15,14 @@ function daysInMonth(year: number, month: number): number {
 interface Props {
   isNight: boolean;
   onDiagnose: (birthdateKey: string) => void;
+  initialError?: string | null;
 }
 
-export default function BirthdateForm({ isNight, onDiagnose }: Props) {
+export default function BirthdateForm({ isNight, onDiagnose, initialError = null }: Props) {
   const [year, setYear] = useState(CURRENT_YEAR - 20);
   const [month, setMonth] = useState(1);
   const [day, setDay] = useState(1);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(initialError);
 
   const days = Array.from({ length: daysInMonth(year, month) }, (_, i) => i + 1);
 

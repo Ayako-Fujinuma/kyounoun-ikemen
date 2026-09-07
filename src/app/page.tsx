@@ -45,14 +45,11 @@ export default async function Home({
           生年月日を教えてくれたら、今日のあなたにぴったりのホストが会いに来てくれるよ。
           夜21時を過ぎたら、そっと寄り添う癒しモードに変わるから、遅い時間でも安心して。
         </p>
-        {invalidDate && (
-          <p className="text-sm font-bold text-red-500">正しい生年月日を選んでね</p>
-        )}
       </div>
 
       <HeroImage />
 
-      <FortuneApp />
+      <FortuneApp initialError={invalidDate ? "正しい生年月日を選んでね" : null} />
     </main>
   );
 }

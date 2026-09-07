@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useNightMode } from "@/hooks/useNightMode";
 import BirthdateForm from "./BirthdateForm";
 
-export default function FortuneApp() {
+export default function FortuneApp({ initialError = null }: { initialError?: string | null }) {
   const { isNight } = useNightMode();
   const router = useRouter();
 
@@ -14,7 +14,7 @@ export default function FortuneApp() {
 
   return (
     <div className="flex flex-col items-center gap-8 w-full">
-      <BirthdateForm isNight={isNight} onDiagnose={handleDiagnose} />
+      <BirthdateForm isNight={isNight} onDiagnose={handleDiagnose} initialError={initialError} />
     </div>
   );
 }
