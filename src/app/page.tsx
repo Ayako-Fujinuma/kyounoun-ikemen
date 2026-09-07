@@ -1,11 +1,26 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import FortuneApp from "@/components/FortuneApp";
 
+const TITLE = "今日の運勢イケメン占い";
+const DESCRIPTION =
+  "生年月日を入れるだけ。今日のあなたにぴったりのイケメンが応援コメントを届けてくれる無料占いサイト。夜21時からはナイトモードで癒しコメントに切り替わります。";
+
 export const metadata: Metadata = {
-  title: "今日の運勢イケメン占い",
-  description:
-    "生年月日を入れるだけ。今日のあなたにぴったりのイケメンが応援コメントを届けてくれる無料占いサイト。夜21時からはナイトモードで癒しコメントに切り替わります。",
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: "/hero.jpeg", width: 896, height: 1200, alt: "登場キャラクターたち" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/hero.jpeg"],
+  },
 };
 
 export default function Home() {
@@ -26,14 +41,22 @@ export default function Home() {
         </p>
       </div>
 
-      <FortuneApp />
-
-      <Link
-        href="/characters"
-        className="text-sm font-semibold underline underline-offset-4 opacity-80 hover:opacity-100"
-      >
-        登場キャラクター一覧を見る →
+      <Link href="/characters" className="block w-full max-w-xs sm:max-w-sm group">
+        <div className="relative aspect-[896/1200] rounded-3xl overflow-hidden shadow-2xl transition-transform group-hover:scale-[1.02]">
+          <Image
+            src="/hero.jpeg"
+            alt="登場キャラクターたち(蓮・陽翔・碧・湊・怜・獅道・そら・彰)"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        <p className="text-center text-sm font-semibold mt-2 opacity-80 group-hover:opacity-100 underline underline-offset-4">
+          登場キャラクター一覧を見る →
+        </p>
       </Link>
+
+      <FortuneApp />
     </main>
   );
 }
