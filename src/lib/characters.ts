@@ -4,8 +4,17 @@ export interface Character {
   type: string;
   catchphrase: string;
   intro: string;
+  /** 夜モード用(デフォルト)。dayImage未設定時は昼モードでもこれが使われる。 */
   image: string;
+  /** 昼モード用。未設定ならimageにフォールバックする。 */
+  dayImage?: string;
   gradient: string;
+}
+
+/** 昼夜モードに応じて表示すべき画像パスを返す。dayImage未指定なら常にimageを使う。 */
+export function getCharacterImage(character: Character, isNight: boolean): string {
+  if (!isNight && character.dayImage) return character.dayImage;
+  return character.image;
 }
 
 /**

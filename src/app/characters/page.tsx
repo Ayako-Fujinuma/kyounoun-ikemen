@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { characters } from "@/lib/characters";
+import { characters, getCharacterImage } from "@/lib/characters";
 
 export const metadata: Metadata = {
   title: "キャラクター紹介 | 今日の運勢イケメン占い",
@@ -18,7 +18,7 @@ export default function CharactersPage() {
             <div
               className={`relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br ${c.gradient}`}
             >
-              <Image src={c.image} alt={c.name} fill className="object-cover" />
+              <Image src={getCharacterImage(c, false)} alt={c.name} fill className="object-cover" />
             </div>
             <p className="font-bold">{c.name}</p>
             <p className="text-xs opacity-80 leading-relaxed">{c.intro}</p>

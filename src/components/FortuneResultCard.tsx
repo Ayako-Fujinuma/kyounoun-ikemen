@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { FortuneResult } from "@/lib/fortune";
+import { getCharacterImage } from "@/lib/characters";
 import { MAX_HEARTS } from "@/lib/fortuneHearts";
 
 export default function FortuneResultCard({ result }: { result: FortuneResult }) {
@@ -28,7 +29,7 @@ export default function FortuneResultCard({ result }: { result: FortuneResult })
       </div>
       <div className={`relative aspect-[3/4] bg-gradient-to-br ${character.gradient}`}>
         <Image
-          src={character.image}
+          src={getCharacterImage(character, isNight)}
           alt={character.name}
           fill
           className="object-cover"

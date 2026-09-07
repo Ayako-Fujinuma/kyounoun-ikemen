@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
-import { characters, type Character } from "@/lib/characters";
+import { characters, getCharacterImage, type Character } from "@/lib/characters";
 import { formatDateKeyForDisplay } from "@/lib/date";
 
 const SHUFFLE_INTERVAL_MS = 110;
@@ -67,7 +67,7 @@ export default function RevealResult({ finalCharacter, isNight, birthdateKey, ch
         {characters.map((c, i) => (
           <Image
             key={c.id}
-            src={c.image}
+            src={getCharacterImage(c, isNight)}
             alt=""
             fill
             priority

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { formatDateKey, getTodayKeyJST, isNightModeJST, isValidBirthdate } from "@/lib/date";
 import { generateFortune, type FortuneResult } from "@/lib/fortune";
+import { getCharacterImage } from "@/lib/characters";
 import { heartsDisplay } from "@/lib/fortuneHearts";
 import FortuneResultCard from "@/components/FortuneResultCard";
 import MoreMessages from "@/components/MoreMessages";
@@ -47,10 +48,10 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const resolved = await resolveResult(searchParams);
   if (!resolved) return { title: "診断結果 | 今日の運勢イケメン占い" };
 
-  const { character, hearts } = resolved.result;
+  const { character, hearts, isNight } = resolved.result;
   const title = `今日の運勢は${heartsDisplay(hearts)}${character.name}からの応援メッセージ | 今日の運勢イケメン占い`;
   const description = character.catchphrase;
-  const imageUrl = await absoluteUrl(character.image);
+  const imageUrl = await absoluteUrl(getCharacterImage(character, isNight));
 
   return {
     title,
