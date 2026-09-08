@@ -10,6 +10,12 @@ export default function Footer() {
         <Link href="/sister-site" className="hover:opacity-100">
           姉妹サイト
         </Link>
+        <Link href="/about" className="hover:opacity-100">
+          運営者情報
+        </Link>
+        <Link href="/privacy" className="hover:opacity-100">
+          プライバシーポリシー
+        </Link>
         <Link href="/contact" className="hover:opacity-100">
           お問い合わせ
         </Link>
