@@ -14,15 +14,14 @@ function daysInMonth(year: number, month: number): number {
 
 interface Props {
   isNight: boolean;
-  onDiagnose: (birthdateKey: string) => void;
-  initialError?: string | null;
+  onDiagnose: () => void;
 }
 
-export default function BirthdateForm({ isNight, onDiagnose, initialError = null }: Props) {
+export default function BirthdateForm({ isNight, onDiagnose }: Props) {
   const [year, setYear] = useState(CURRENT_YEAR - 20);
   const [month, setMonth] = useState(1);
   const [day, setDay] = useState(1);
-  const [error, setError] = useState<string | null>(initialError);
+  const [error, setError] = useState<string | null>(null);
 
   const days = Array.from({ length: daysInMonth(year, month) }, (_, i) => i + 1);
 
@@ -62,7 +61,7 @@ export default function BirthdateForm({ isNight, onDiagnose, initialError = null
     setError(null);
     const birthdateKey = formatDateKey(year, month, day);
     setCachedBirthdate(birthdateKey);
-    onDiagnose(birthdateKey);
+    onDiagnose();
   }
 
   const selectClass = `rounded-xl border px-3 py-2 text-base sm:text-lg font-medium focus:outline-none focus:ring-2 ${

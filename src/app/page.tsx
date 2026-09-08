@@ -23,13 +23,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
-  const { error } = await searchParams;
-  const invalidDate = error === "invalid_date";
+export default async function Home() {
   const isNight = isNightModeJST();
 
   return (
@@ -60,7 +54,7 @@ export default async function Home({
 
       <HeroImage />
 
-      <FortuneApp initialError={invalidDate ? "正しい生年月日を選んでね" : null} />
+      <FortuneApp />
     </main>
   );
 }
