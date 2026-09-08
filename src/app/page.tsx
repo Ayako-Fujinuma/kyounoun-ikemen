@@ -31,7 +31,7 @@ export default async function Home({
   const invalidDate = error === "invalid_date";
 
   return (
-    <main className="flex flex-1 flex-col items-center gap-10 px-6 pt-10 pb-16 sm:pt-14 sm:pb-24">
+    <main className="flex flex-1 flex-col items-center gap-10 px-6 pt-2 pb-16 sm:pt-4 sm:pb-24">
       <div className="text-center space-y-3 max-w-xl">
         <p className="text-sm font-semibold tracking-widest opacity-70">TODAY&apos;S FORTUNE</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-snug">
@@ -43,7 +43,7 @@ export default async function Home({
         </h1>
         <p className="opacity-80 text-base leading-relaxed">
           生年月日を教えてくれたら、今日のあなたにぴったりのホストが会いに来てくれるよ。
-          夜21時を過ぎたら、そっと寄り添う癒しモードに変わるから、遅い時間でも安心して。
+          夜21時を過ぎたら、そっと寄り添う癒しモードに変わるから、帰ってきたら教えてね。
         </p>
       </div>
 
