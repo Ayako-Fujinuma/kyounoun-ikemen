@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Zen_Maru_Gothic } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import SiteThemeWrapper from "@/components/SiteThemeWrapper";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const GA_MEASUREMENT_ID = "G-EFK96QLXYT";
 
 const zenMaruGothic = Zen_Maru_Gothic({
   variable: "--font-zen-maru",
@@ -27,6 +30,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
           <Footer />
         </SiteThemeWrapper>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
