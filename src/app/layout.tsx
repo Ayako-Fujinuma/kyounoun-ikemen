@@ -12,6 +12,7 @@ const zenMaruGothic = Zen_Maru_Gothic({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ikemen.kyounoun.com"),
   title: "今日の運勢イケメン占い",
   description:
     "生年月日を入れるだけで、今日のあなたにぴったりのイケメンが応援コメントを届けてくれる占いサイト。",
