@@ -24,6 +24,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ja" className={`${zenMaruGothic.variable} h-full antialiased`}>
+      <head>
+        {/* AdSenseのクローラーがコードを検出できるよう、next/scriptではなく素の<script>タグで埋め込む */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3246099949879278"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <SiteThemeWrapper>
           <Header />
