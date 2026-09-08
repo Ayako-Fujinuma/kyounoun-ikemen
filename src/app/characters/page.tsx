@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function CharactersPage() {
   return (
-    <main className="flex-1 px-6 py-16 max-w-4xl mx-auto w-full">
+    <main className="flex-1 px-6 pt-2 pb-16 sm:pt-4 sm:pb-24 max-w-4xl mx-auto w-full">
       <h1 className="text-2xl font-extrabold text-center mb-2">登場キャラクター</h1>
       <p className="text-center opacity-70 mb-10">あなたの今日には、どのイケメンが現れるかな?</p>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
