@@ -8,6 +8,10 @@ export interface Character {
   image: string;
   /** 昼モード用。未設定ならimageにフォールバックする。 */
   dayImage?: string;
+  /** SNSシェア用の横長(1200x630目安)画像・夜モード用。未設定なら通常の縦画像にフォールバックする。 */
+  ogImage?: string;
+  /** SNSシェア用の横長画像・昼モード用。未設定ならogImage、それも無ければ通常の縦画像を使う。 */
+  ogImageDay?: string;
   gradient: string;
 }
 
@@ -15,6 +19,13 @@ export interface Character {
 export function getCharacterImage(character: Character, isNight: boolean): string {
   if (!isNight && character.dayImage) return character.dayImage;
   return character.image;
+}
+
+/** SNSシェア用の横長画像パスを返す。専用画像が無ければ通常の縦画像にフォールバックする。 */
+export function getCharacterOgImage(character: Character, isNight: boolean): string {
+  if (!isNight && character.ogImageDay) return character.ogImageDay;
+  if (character.ogImage) return character.ogImage;
+  return getCharacterImage(character, isNight);
 }
 
 /**
@@ -31,6 +42,8 @@ export const characters: Character[] = [
     intro: "お店で指名率No.1を誇る、色気たっぷりのエースホスト。",
     image: "/characters/ren.jpeg",
     dayImage: "/characters/ren-day.png",
+    ogImage: "/characters/ren-sns.png",
+    ogImageDay: "/characters/ren-day-sns.jpeg",
     gradient: "from-rose-400 to-pink-500",
   },
   {
@@ -41,6 +54,8 @@ export const characters: Character[] = [
     intro: "誰からも好かれる、優しさ全開の王道イケメンホスト。",
     image: "/characters/haruto.jpeg",
     dayImage: "/characters/haruto-day.png",
+    ogImage: "/characters/haruto-sns.jpeg",
+    ogImageDay: "/characters/haruto-day-sns.jpeg",
     gradient: "from-amber-400 to-orange-500",
   },
   {
@@ -51,6 +66,8 @@ export const characters: Character[] = [
     intro: "メガネがよく似合う、頭の切れる物静かなホスト。",
     image: "/characters/aoi.jpeg",
     dayImage: "/characters/aoi-day.png",
+    ogImage: "/characters/aoi-sns.jpeg",
+    ogImageDay: "/characters/aoi-day-sns.png",
     gradient: "from-sky-400 to-blue-600",
   },
   {
@@ -61,6 +78,8 @@ export const characters: Character[] = [
     intro: "眩しい笑顔がチャームポイントの、少し童顔なホスト。",
     image: "/characters/minato.jpeg",
     dayImage: "/characters/minato-day.png",
+    ogImage: "/characters/minato-sns.jpeg",
+    ogImageDay: "/characters/minato-day-sns.jpeg",
     gradient: "from-teal-400 to-emerald-500",
   },
   {
@@ -71,6 +90,8 @@ export const characters: Character[] = [
     intro: "長い髪と落ち着いた雰囲気が魅力の、クールな大人ホスト。",
     image: "/characters/rei.jpeg",
     dayImage: "/characters/rei-day.png",
+    ogImage: "/characters/rei-sns.png",
+    ogImageDay: "/characters/rei-day-sns.png",
     gradient: "from-indigo-400 to-violet-600",
   },
   {
@@ -81,6 +102,8 @@ export const characters: Character[] = [
     intro: "元気いっぱいで、会うたびにパワーをくれる体育会系ホスト。",
     image: "/characters/shidou.jpeg",
     dayImage: "/characters/shidou-day.png",
+    ogImage: "/characters/shidou-sns.png",
+    ogImageDay: "/characters/shidou-day-sns.png",
     gradient: "from-red-500 to-orange-600",
   },
   {
@@ -91,6 +114,8 @@ export const characters: Character[] = [
     intro: "物静かでマイペース、一緒にいるとほっとする癒し系ホスト。",
     image: "/characters/sora.jpeg",
     dayImage: "/characters/sora-day.png",
+    ogImage: "/characters/sora-sns.png",
+    ogImageDay: "/characters/sora-day-sns.png",
     gradient: "from-cyan-300 to-sky-400",
   },
   {
@@ -100,7 +125,9 @@ export const characters: Character[] = [
     catchphrase: "困ったらいつでも呼べよ。",
     intro: "余裕たっぷりの包容力で頼れる、40代イケオジホスト。",
     image: "/characters/akira.jpeg",
-    dayImage: "/characters/akira-day.jpeg",
+    dayImage: "/characters/akira-day.png",
+    ogImage: "/characters/akira-sns.jpeg",
+    ogImageDay: "/characters/akira-day-sns.png",
     gradient: "from-slate-500 to-gray-700",
   },
 ];
