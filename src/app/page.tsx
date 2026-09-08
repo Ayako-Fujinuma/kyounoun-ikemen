@@ -42,7 +42,7 @@ export default async function Home({
           占います
         </h1>
         <p className="opacity-80 text-base leading-relaxed">
-          生年月日を教えてくれたら、今日のあなたにぴったりのホストが会いに来てくれるよ。
+          生年月日を教えてくれたら、今日のあなたにぴったりのイケメンが会いに来てくれるよ。
           夜21時を過ぎたら、そっと寄り添う癒しモードに変わるから、帰ってきたら教えてね。
         </p>
       </div>

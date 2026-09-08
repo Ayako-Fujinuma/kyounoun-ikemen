@@ -76,7 +76,7 @@ export default async function ResultPage({ searchParams }: Props) {
   const { birthdateKey, result } = resolved;
 
   const shareUrl = await absoluteUrl(`/result?birth=${birthdateKey}`);
-  const shareText = `【今日の運勢イケメン占い】\n今日の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなホストは「${result.character.name}」\n「${result.character.catchphrase}」`;
+  const shareText = `【今日の運勢イケメン占い】\n今日の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなイケメンは「${result.character.name}」\n「${result.character.catchphrase}」`;
 
   return (
     <main className="flex flex-1 flex-col items-center gap-8 px-6 pt-2 pb-16 sm:pt-4 sm:pb-24">
