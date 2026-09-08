@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getTodayKeyJST, isNightModeJST, isValidBirthdate } from "@/lib/date";
+import { formatDateKeyForDisplay, getTodayKeyJST, isNightModeJST, isValidBirthdate } from "@/lib/date";
 import { generateFortune, type FortuneResult } from "@/lib/fortune";
 import { heartsDisplay } from "@/lib/fortuneHearts";
 import { getCachedBirthdate } from "@/lib/birthdateCache";
@@ -21,7 +21,9 @@ function isValidBirthdateKey(key: string): boolean {
 
 export default function ResultClient() {
   const router = useRouter();
-  const [state, setState] = useState<{ birthdateKey: string; result: FortuneResult } | null>(null);
+  const [state, setState] = useState<{ birthdateKey: string; todayKey: string; result: FortuneResult } | null>(
+    null
+  );
 
   useEffect(() => {
     const birthdateKey = getCachedBirthdate();
@@ -30,17 +32,18 @@ export default function ResultClient() {
       return;
     }
     const isNight = isNightModeJST();
-    const result = generateFortune(birthdateKey, getTodayKeyJST(), isNight);
+    const todayKey = getTodayKeyJST();
+    const result = generateFortune(birthdateKey, todayKey, isNight);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorageからの初回読み込みのみ、ここでしか行えない
-    setState({ birthdateKey, result });
+    setState({ birthdateKey, todayKey, result });
   }, [router]);
 
   if (!state) return null;
 
-  const { birthdateKey, result } = state;
+  const { birthdateKey, todayKey, result } = state;
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const shareUrl = `${origin}/share/${result.character.id}?hearts=${result.hearts}&night=${result.isNight ? 1 : 0}`;
-  const shareText = `【今日の運勢イケメン占い】\n今日の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなイケメンは「${result.character.name}」\n「${result.character.catchphrase}」`;
+  const shareText = `【今日の運勢イケメン占い】\n${formatDateKeyForDisplay(todayKey)}の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなイケメンは「${result.character.name}」\n「${result.character.catchphrase}」`;
 
   return (
     <RevealResult finalCharacter={result.character} isNight={result.isNight} birthdateKey={birthdateKey}>
