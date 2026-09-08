@@ -7,6 +7,7 @@ import { formatDateKeyForDisplay } from "@/lib/date";
 
 const SHUFFLE_INTERVAL_MS = 110;
 const SHUFFLE_LAPS = 2;
+const SHUFFLE_DURATION_MS = characters.length * SHUFFLE_LAPS * SHUFFLE_INTERVAL_MS;
 const PAUSE_ON_LANDED_MS = 350;
 
 interface Props {
@@ -20,21 +21,27 @@ export default function RevealResult({ finalCharacter, isNight, birthdateKey, ch
   const [revealed, setRevealed] = useState(false);
   const [shuffleIndex, setShuffleIndex] = useState(0);
 
+  // setIntervalのコールバック回数ではなく実経過時間で判定することで、
+  // タブのバックグラウンド化などでコールバックが飛んでも演出の合計時間が短くならないようにする。
   useEffect(() => {
     const finalIndex = characters.findIndex((c) => c.id === finalCharacter.id);
-    const shuffleSteps = characters.length * SHUFFLE_LAPS;
-    let step = 0;
-    const interval = setInterval(() => {
-      step += 1;
-      if (step >= shuffleSteps) {
-        clearInterval(interval);
+    const startTime = Date.now();
+
+    const intervalId = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+
+      if (elapsed >= SHUFFLE_DURATION_MS) {
+        clearInterval(intervalId);
         setShuffleIndex(finalIndex);
         setTimeout(() => setRevealed(true), PAUSE_ON_LANDED_MS);
         return;
       }
-      setShuffleIndex((i) => (i + 1) % characters.length);
+
+      const stepIndex = Math.floor(elapsed / SHUFFLE_INTERVAL_MS) % characters.length;
+      setShuffleIndex(stepIndex);
     }, SHUFFLE_INTERVAL_MS);
-    return () => clearInterval(interval);
+
+    return () => clearInterval(intervalId);
   }, [finalCharacter.id]);
 
   const dateLabel = formatDateKeyForDisplay(birthdateKey);

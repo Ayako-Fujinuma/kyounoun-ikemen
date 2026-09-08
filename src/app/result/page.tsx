@@ -79,7 +79,7 @@ export default async function ResultPage({ searchParams }: Props) {
   const shareText = `【今日の運勢イケメン占い】\n今日の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなホストは「${result.character.name}」\n「${result.character.catchphrase}」`;
 
   return (
-    <main className="flex flex-1 flex-col items-center gap-8 px-6 py-16 sm:py-24">
+    <main className="flex flex-1 flex-col items-center gap-8 px-6 pt-2 pb-16 sm:pt-4 sm:pb-24">
       <RevealResult finalCharacter={result.character} isNight={result.isNight} birthdateKey={birthdateKey}>
         <FortuneResultCard result={result} />
         <MoreMessages
