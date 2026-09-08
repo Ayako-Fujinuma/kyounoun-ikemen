@@ -8,6 +8,10 @@ export interface Character {
   image: string;
   /** 昼モード用。未設定ならimageにフォールバックする。 */
   dayImage?: string;
+  /** SNSシェア用の横長(1200x630目安)画像・夜モード用。未設定なら通常の縦画像にフォールバックする。 */
+  ogImage?: string;
+  /** SNSシェア用の横長画像・昼モード用。未設定ならogImage、それも無ければ通常の縦画像を使う。 */
+  ogImageDay?: string;
   gradient: string;
 }
 
@@ -15,6 +19,13 @@ export interface Character {
 export function getCharacterImage(character: Character, isNight: boolean): string {
   if (!isNight && character.dayImage) return character.dayImage;
   return character.image;
+}
+
+/** SNSシェア用の横長画像パスを返す。専用画像が無ければ通常の縦画像にフォールバックする。 */
+export function getCharacterOgImage(character: Character, isNight: boolean): string {
+  if (!isNight && character.ogImageDay) return character.ogImageDay;
+  if (character.ogImage) return character.ogImage;
+  return getCharacterImage(character, isNight);
 }
 
 /**
@@ -51,6 +62,7 @@ export const characters: Character[] = [
     intro: "メガネがよく似合う、頭の切れる物静かなホスト。",
     image: "/characters/aoi.jpeg",
     dayImage: "/characters/aoi-day.png",
+    ogImageDay: "/characters/aoi-day-sns.jpeg",
     gradient: "from-sky-400 to-blue-600",
   },
   {
@@ -101,6 +113,8 @@ export const characters: Character[] = [
     intro: "余裕たっぷりの包容力で頼れる、40代イケオジホスト。",
     image: "/characters/akira.jpeg",
     dayImage: "/characters/akira-day.jpeg",
+    ogImage: "/characters/akira-sns.jpeg",
+    ogImageDay: "/characters/akira-day-sns.jpeg",
     gradient: "from-slate-500 to-gray-700",
   },
 ];

@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { formatDateKey, getTodayKeyJST, isNightModeJST, isValidBirthdate } from "@/lib/date";
 import { generateFortune, type FortuneResult } from "@/lib/fortune";
-import { getCharacterImage } from "@/lib/characters";
+import { getCharacterOgImage } from "@/lib/characters";
 import { heartsDisplay } from "@/lib/fortuneHearts";
 import FortuneResultCard from "@/components/FortuneResultCard";
 import MoreMessages from "@/components/MoreMessages";
@@ -51,7 +51,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { character, hearts, isNight } = resolved.result;
   const title = `今日の運勢は${heartsDisplay(hearts)}${character.name}からの応援メッセージ | 今日の運勢イケメン占い`;
   const description = character.catchphrase;
-  const imageUrl = await absoluteUrl(getCharacterImage(character, isNight));
+  const imageUrl = await absoluteUrl(getCharacterOgImage(character, isNight));
 
   return {
     title,
@@ -59,7 +59,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     openGraph: {
       title,
       description,
-      images: [{ url: imageUrl, alt: character.name }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: character.name }],
     },
     twitter: {
       card: "summary_large_image",
