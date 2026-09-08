@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { formatDateKey, isValidBirthdate } from "@/lib/date";
+import { getCachedBirthdate, setCachedBirthdate } from "@/lib/birthdateCache";
 
 const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: 100 }, (_, i) => CURRENT_YEAR - i);
@@ -14,15 +15,31 @@ function daysInMonth(year: number, month: number): number {
 interface Props {
   isNight: boolean;
   onDiagnose: (birthdateKey: string) => void;
+  initialError?: string | null;
 }
 
-export default function BirthdateForm({ isNight, onDiagnose }: Props) {
+export default function BirthdateForm({ isNight, onDiagnose, initialError = null }: Props) {
   const [year, setYear] = useState(CURRENT_YEAR - 20);
   const [month, setMonth] = useState(1);
   const [day, setDay] = useState(1);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(initialError);
 
   const days = Array.from({ length: daysInMonth(year, month) }, (_, i) => i + 1);
+
+  // 初期値はサーバーとクライアントで一致させる必要があるため、localStorageの読み込みは
+  // マウント後の1回だけこの副作用で行う(SSR時点ではlocalStorageに触れられない)。
+  useEffect(() => {
+    const cached = getCachedBirthdate();
+    const match = cached?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return;
+    const [, y, m, d] = match;
+    if (isValidBirthdate(Number(y), Number(m), Number(d))) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorageからの初回同期のみ、ここでしか行えない
+      setYear(Number(y));
+      setMonth(Number(m));
+      setDay(Number(d));
+    }
+  }, []);
 
   function handleMonthChange(nextMonth: number) {
     setMonth(nextMonth);
@@ -43,7 +60,9 @@ export default function BirthdateForm({ isNight, onDiagnose }: Props) {
       return;
     }
     setError(null);
-    onDiagnose(formatDateKey(year, month, day));
+    const birthdateKey = formatDateKey(year, month, day);
+    setCachedBirthdate(birthdateKey);
+    onDiagnose(birthdateKey);
   }
 
   const selectClass = `rounded-xl border px-3 py-2 text-base sm:text-lg font-medium focus:outline-none focus:ring-2 ${
@@ -54,6 +73,9 @@ export default function BirthdateForm({ isNight, onDiagnose }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full max-w-md">
+      <p className={`text-sm font-bold ${isNight ? "text-slate-200" : "text-slate-700"}`}>
+        あなたの生年月日を教えてね
+      </p>
       <div className="flex gap-2 w-full justify-center">
         <select
           aria-label="生まれ年"

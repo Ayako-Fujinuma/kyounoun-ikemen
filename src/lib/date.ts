@@ -20,6 +20,14 @@ export function formatDateKey(year: number, month: number, day: number): string 
   return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
+/** "2003-11-02" のようなdateKeyを"2003年11月2日"のような表示用文字列にする */
+export function formatDateKeyForDisplay(dateKey: string): string {
+  const match = dateKey.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return dateKey;
+  const [, y, m, d] = match;
+  return `${Number(y)}年${Number(m)}月${Number(d)}日`;
+}
+
 export function getTodayKeyJST(date: Date = new Date()): string {
   const { year, month, day } = getJSTParts(date);
   return formatDateKey(year, month, day);

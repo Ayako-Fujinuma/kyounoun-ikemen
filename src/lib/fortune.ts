@@ -1,10 +1,18 @@
 import { characters, type Character } from "./characters";
-import { dayMessages, nightMessages } from "./messages";
+import { characterVoices, dayMain, nightMain } from "./messages";
+import { pickHeartCount } from "./fortuneHearts";
+
+export type VoiceMode = "day" | "night";
 
 export interface FortuneResult {
   character: Character;
+  hearts: number;
   message: string;
+  opening: string;
+  main: string;
+  closing: string;
   isNight: boolean;
+  voiceMode: VoiceMode;
 }
 
 /**
@@ -20,8 +28,11 @@ function hashString(input: string): number {
 }
 
 /**
- * 生年月日 + 今日の日付(JST)から、今日だけの「ぴったりのイケメン」とメッセージを決定する。
- * 同じ人×同じ日なら必ず同じ結果になり、日が変われば結果も変わる。
+ * 生年月日 + 今日の日付(JST)から、今日だけの運勢(ハートの数)・「ぴったりのイケメン」・
+ * メッセージを決定する。同じ人×同じ日なら必ず同じ結果になり、日が変われば結果も変わる。
+ * opening/closingは選ばれたキャラごとの喋り方から選ぶことで、内容は共通でも
+ * キャラの個性が出るようにしている。voiceMode(口調・本文の昼夜)は実際の時刻(isNight)
+ * にそのまま合わせる。
  */
 export function generateFortune(
   birthdateKey: string,
@@ -30,15 +41,24 @@ export function generateFortune(
 ): FortuneResult {
   const seedBase = `${birthdateKey}#${todayKey}`;
   const character = characters[hashString(`${seedBase}#character`) % characters.length];
+  const hearts = pickHeartCount(hashString(`${seedBase}#hearts`));
 
-  const parts = isNight ? nightMessages : dayMessages;
-  const opening = parts.opening[hashString(`${seedBase}#opening`) % parts.opening.length];
-  const main = parts.main[hashString(`${seedBase}#main`) % parts.main.length];
-  const closing = parts.closing[hashString(`${seedBase}#closing`) % parts.closing.length];
+  const voiceMode: VoiceMode = isNight ? "night" : "day";
+  const voice = characterVoices[character.id][voiceMode];
+  const mainPool = voiceMode === "night" ? nightMain : dayMain;
+
+  const opening = voice.opening[hashString(`${seedBase}#opening`) % voice.opening.length];
+  const main = mainPool[hashString(`${seedBase}#main`) % mainPool.length];
+  const closing = voice.closing[hashString(`${seedBase}#closing`) % voice.closing.length];
 
   return {
     character,
+    hearts,
     message: `${opening}\n${main}\n${closing}`,
+    opening,
+    main,
+    closing,
     isNight,
+    voiceMode,
   };
 }
