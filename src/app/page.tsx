@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import FortuneApp from "@/components/FortuneApp";
 import HeroImage from "@/components/HeroImage";
+import { isNightModeJST } from "@/lib/date";
 
 const TITLE = "今日の運勢イケメン占い";
 const DESCRIPTION =
@@ -29,6 +30,7 @@ export default async function Home({
 }) {
   const { error } = await searchParams;
   const invalidDate = error === "invalid_date";
+  const isNight = isNightModeJST();
 
   return (
     <main className="flex flex-1 flex-col items-center gap-10 px-6 pt-2 pb-16 sm:pt-4 sm:pb-24">
@@ -42,8 +44,17 @@ export default async function Home({
           占います
         </h1>
         <p className="opacity-80 text-base leading-relaxed">
-          生年月日を教えてくれたら、今日のあなたにぴったりのホストが会いに来てくれるよ。
-          夜21時を過ぎたら、そっと寄り添う癒しモードに変わるから、帰ってきたら教えてね。
+          {isNight ? (
+            <>
+              おかえりなさい。もう夜だから、そっと寄り添う癒しモードに変わってるよ。
+              生年月日を教えてくれたら、今日のあなたにぴったりのイケメンが出迎えてくれるよ。
+            </>
+          ) : (
+            <>
+              生年月日を教えてくれたら、今日のあなたにぴったりのイケメンが会いに来てくれるよ。
+              夜21時を過ぎたら、そっと寄り添う癒しモードに変わるから、帰ってきたら教えてね。
+            </>
+          )}
         </p>
       </div>
 
