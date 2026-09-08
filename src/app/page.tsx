@@ -40,7 +40,7 @@ export default async function Home() {
         <p className="opacity-80 text-base leading-relaxed">
           {isNight ? (
             <>
-              おかえりなさい。もう夜だから、そっと寄り添う癒しモードに変わってるよ。
+              お帰りなさい。
               生年月日を教えてくれたら、今日のあなたにぴったりのイケメンが出迎えてくれるよ。
             </>
           ) : (
