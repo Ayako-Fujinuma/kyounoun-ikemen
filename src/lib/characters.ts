@@ -38,7 +38,7 @@ export const characters: Character[] = [
     id: "ren",
     name: "レン",
     type: "溺愛系エース",
-    catchphrase: "今夜も、君だけを見てるよ。",
+    catchphrase: "今日も、君だけを見てるよ。",
     intro: "指名率No.1を誇る、色気たっぷりのエース。",
     image: "/characters/ren.jpeg",
     dayImage: "/characters/ren-day.jpeg",
