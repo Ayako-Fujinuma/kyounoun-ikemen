@@ -43,7 +43,8 @@ export default function ResultClient() {
   const { birthdateKey, todayKey, result } = state;
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const shareUrl = `${origin}/share/${result.character.id}?hearts=${result.hearts}&night=${result.isNight ? 1 : 0}`;
-  const shareText = `【今日の運勢イケメン占い】\n${formatDateKeyForDisplay(todayKey)}の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなイケメンは「${result.character.name}」\n「${result.character.catchphrase}」`;
+  const modeLabel = result.isNight ? "Night Version" : "Morning Version";
+  const shareText = `【今日の運勢イケメン占い　${modeLabel}】\n${formatDateKeyForDisplay(todayKey)}の運勢 ${heartsDisplay(result.hearts)}\n今日のあなたにピッタリなイケメンは「${result.character.name}」\n「${result.character.catchphrase}」`;
 
   return (
     <RevealResult finalCharacter={result.character} isNight={result.isNight} birthdateKey={birthdateKey}>

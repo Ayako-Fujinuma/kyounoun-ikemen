@@ -23,7 +23,11 @@ export function pickHeartCount(seedValue: number): number {
   return WEIGHTS[0].count;
 }
 
-/** ♥♥♥♡♡ のようなテキスト表現(シェア文・OGタイトルなど、絵文字が使える場所ならどこでも使える) */
+/**
+ * ❤️🤍🤍 のようなテキスト表現(シェア文・OGタイトルなど、絵文字が使える場所ならどこでも使える)。
+ * ♥/♡ (記号)ではなく❤️/🤍 (絵文字)を使う。♥は環境によって絵文字扱いされず、
+ * SNSアプリ側のフォントに字形が無いと文字化けすることがあるため。
+ */
 export function heartsDisplay(count: number, max: number = MAX_HEARTS): string {
-  return "♥".repeat(count) + "♡".repeat(Math.max(0, max - count));
+  return "❤️".repeat(count) + "🤍".repeat(Math.max(0, max - count));
 }
